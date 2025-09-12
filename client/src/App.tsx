@@ -10,6 +10,7 @@ import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
 import StudentDashboard from "@/pages/student-dashboard";
 import TeacherDashboard from "@/pages/teacher-dashboard";
+import CreateClass from "@/pages/create-class";
 import AdminDashboard from "@/pages/admin-dashboard";
 import LiveClass from "@/pages/live-class";
 import NotFound from "@/pages/not-found";
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/auth" component={AuthPage} />
       <ProtectedRoute path="/student" component={StudentDashboard} requiredRole="student" />
+      <ProtectedRoute path="/teacher/create" component={CreateClass} requiredRole="teacher" />
       <ProtectedRoute path="/teacher" component={TeacherDashboard} requiredRole="teacher" />
       <ProtectedRoute path="/admin" component={AdminDashboard} requiredRole="admin" />
       <ProtectedRoute path="/live/:classId" component={LiveClass} />
