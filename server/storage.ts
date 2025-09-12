@@ -18,7 +18,7 @@ import {
   type Rating,
   type InsertRating
 } from "@shared/schema";
-import { db } from "./db";
+import { db, pool } from "./db";
 import { eq, desc, count, avg, and } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
@@ -62,15 +62,15 @@ export interface IStorage {
   getUserStats(): Promise<{ totalUsers: number; totalStudents: number; totalTeachers: number }>;
   getClassStats(): Promise<{ totalClasses: number; liveClasses: number }>;
   
-  sessionStore: session.SessionStore;
+  sessionStore: connectPg.PGStore;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: connectPg.PGStore;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({ 
-      pool: require('./db').pool, 
+      pool, 
       createTableIfMissing: true 
     });
   }
@@ -118,7 +118,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteClass(id: string): Promise<boolean> {
     const result = await db.delete(classes).where(eq(classes.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   async enrollStudent(enrollment: InsertEnrollment): Promise<Enrollment> {

@@ -39,7 +39,7 @@ export default function StudentDashboard() {
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
                   <Book className="text-white" />
                 </div>
-                <span className="text-2xl font-bold">{enrollments?.length || 0}</span>
+                <span className="text-2xl font-bold">{Array.isArray(enrollments) ? enrollments.length : 0}</span>
               </div>
               <h3 className="font-semibold text-sm text-muted-foreground">Enrolled Classes</h3>
             </CardContent>

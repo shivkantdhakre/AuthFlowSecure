@@ -41,7 +41,7 @@ export default function AdminDashboard() {
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
                   <Users className="text-white" />
                 </div>
-                <span className="text-2xl font-bold">{stats?.totalUsers || 0}</span>
+                <span className="text-2xl font-bold">{(stats as any)?.totalUsers || 0}</span>
               </div>
               <h3 className="font-semibold text-sm text-muted-foreground">Total Users</h3>
               <div className="text-xs text-green-400 mt-1">↗ +12% this month</div>
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
                 <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
                   <BookOpen className="text-white" />
                 </div>
-                <span className="text-2xl font-bold">{stats?.totalClasses || 0}</span>
+                <span className="text-2xl font-bold">{(stats as any)?.totalClasses || 0}</span>
               </div>
               <h3 className="font-semibold text-sm text-muted-foreground">Total Classes</h3>
               <div className="text-xs text-green-400 mt-1">↗ +8% this month</div>

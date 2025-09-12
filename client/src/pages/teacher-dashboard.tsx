@@ -42,7 +42,7 @@ export default function TeacherDashboard() {
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
                   <BookOpen className="text-white" />
                 </div>
-                <span className="text-2xl font-bold">{classes?.length || 0}</span>
+                <span className="text-2xl font-bold">{Array.isArray(classes) ? classes.length : 0}</span>
               </div>
               <h3 className="font-semibold text-sm text-muted-foreground">Total Classes</h3>
             </CardContent>
