@@ -47,6 +47,7 @@ export interface IStorage {
   
   // Content operations
   getContentByClass(classId: string): Promise<Content[]>;
+  getContentByTeacher(teacherId: string): Promise<Content[]>;
   createContent(contentData: InsertContent): Promise<Content>;
   
   // Message operations
@@ -142,6 +143,22 @@ export class DatabaseStorage implements IStorage {
 
   async getContentByClass(classId: string): Promise<Content[]> {
     return await db.select().from(content).where(eq(content.classId, classId)).orderBy(desc(content.createdAt));
+  }
+
+  async getContentByTeacher(teacherId: string): Promise<Content[]> {
+    return await db.select({
+      id: content.id,
+      classId: content.classId,
+      title: content.title,
+      type: content.type,
+      fileUrl: content.fileUrl,
+      content: content.content,
+      createdAt: content.createdAt
+    })
+    .from(content)
+    .innerJoin(classes, eq(content.classId, classes.id))
+    .where(eq(classes.teacherId, teacherId))
+    .orderBy(desc(content.createdAt));
   }
 
   async createContent(contentData: InsertContent): Promise<Content> {

@@ -45,7 +45,7 @@ export const enrollments = pgTable("enrollments", {
 // Content table
 export const content = pgTable("content", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  classId: varchar("class_id").notNull().references(() => classes.id),
+  classId: varchar("class_id").references(() => classes.id), // Optional - allows general teacher content
   title: varchar("title").notNull(),
   type: varchar("type").notNull(), // video, pdf, slide, note
   fileUrl: varchar("file_url"),

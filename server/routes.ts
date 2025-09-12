@@ -199,6 +199,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/teacher/content", requireAuth, requireRole('teacher'), async (req, res) => {
+    try {
+      const content = await storage.getContentByTeacher(req.user!.id);
+      res.json(content);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch teacher content" });
+    }
+  });
+
+  app.post("/api/teacher/content", requireAuth, requireRole('teacher'), upload.single('file'), async (req, res) => {
+    try {
+      const { title, type, content: textContent, classId } = req.body;
+      
+      if (!title || !type) {
+        return res.status(400).json({ message: "Title and type are required" });
+      }
+
+      // If no classId provided, create content without class association
+      // This allows teachers to upload general content not tied to specific classes
+      const contentData = {
+        classId: classId || null, // Allow null for general teacher content
+        title,
+        type,
+        fileUrl: req.file ? `/uploads/${req.file.filename}` : null,
+        content: textContent || null
+      };
+
+      const newContent = await storage.createContent(contentData);
+      res.status(201).json(newContent);
+    } catch (error) {
+      console.error('Content upload error:', error);
+      res.status(500).json({ message: "Failed to upload content" });
+    }
+  });
+
   // Serve uploaded files
   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
